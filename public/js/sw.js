@@ -6,6 +6,7 @@ const version = 7;
 // states in service worker
 var isOnline = true;
 
+var USE_CACHE = false;
 var CACHE_KEY = `sw-personal-v${version}`
 var chachedUrls = [
   '/',
@@ -13,13 +14,14 @@ var chachedUrls = [
   '/static/js/index.js'
 ];
 
+if(USE_CACHE) {
+  self.addEventListener("install", onInstall);
+  self.addEventListener("activate", onActivate);
+  self.addEventListener("message", onMessage);
+  self.addEventListener("fetch", onFetch);
 
-self.addEventListener("install", onInstall);
-self.addEventListener("activate", onActivate);
-self.addEventListener("message", onMessage);
-self.addEventListener("fetch", onFetch);
-
-main().catch(console.error);
+  main().catch(console.error);
+}
 
 async function main() {
   console.log(`service worker v${version} started ..`);
